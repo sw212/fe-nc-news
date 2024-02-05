@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function ArticleCard(props)
 {
     const { article } = props;
@@ -8,7 +10,9 @@ export default function ArticleCard(props)
             <img className="object-cover aspect-square h-60" src={article_img_url} />
 
             <div className="flex flex-col justify-between grow max-2xl p-2">
-                <h2>{title}</h2>
+                <Link to={`/articles/${article_id}`}>
+                    <h2>{title}</h2>
+                </Link>
 
                 <p className="flex justify-between"> 
                     <span>{topic}</span>
