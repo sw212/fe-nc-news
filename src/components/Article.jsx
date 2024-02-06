@@ -25,10 +25,10 @@ export default function Article()
                 <header className="py-4">
                     <h2 className="text-3xl">{article.title}</h2>
                     
-                    <div className="flex justify-between">
-                        <div className="flex space-x-2">
+                    <div className="flex flex-col sm:flex-row justify-between whitespace-nowrap overflow-auto">
+                        <div className="flex">
                             <p>
-                                By {article.author}
+                                <span>By {article.author}</span>
                             </p>
                             <p>
                                 {
@@ -42,7 +42,10 @@ export default function Article()
                                 }
                             </p>
                         </div>
-                        <div>{article.votes} votes</div>
+
+                        <div>
+                            {article.votes} votes
+                        </div>
                     </div>
                 </header>
                 

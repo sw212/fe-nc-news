@@ -9,12 +9,12 @@ export default function ArticleCard(props)
         <div className="flex flex-row">
             <img className="object-cover aspect-square h-60" src={article_img_url} />
 
-            <div className="flex flex-col justify-between grow max-2xl p-2">
+            <div className="flex flex-col justify-between grow max-2xl p-2 space-y-2">
                 <Link to={`/articles/${article_id}`}>
                     <h2>{title}</h2>
                 </Link>
 
-                <p className="flex justify-between"> 
+                <p className="flex flex-col sm:flex-row justify-between whitespace-nowrap"> 
                     <span>{topic}</span>
                     <span>{comment_count} comments</span>
                 </p>

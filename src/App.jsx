@@ -10,7 +10,7 @@ import './App.css'
 function App() {
 
     return (
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-5xl mx-auto p-2">
             <NavBar />
             <Routes>
                 <Route path="/" element={<Home />} />
