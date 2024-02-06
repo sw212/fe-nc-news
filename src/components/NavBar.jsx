@@ -1,8 +1,12 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "../contexts/UserContext";
 
 export default function NavBar()
 {
+    const { user, setUser } = useContext(UserContext);
+    const loggedIn = user !== '';
+
     const [showNavMenu, setShowNavMenu] = useState(false);
     const navMenu = useRef(null);
 
@@ -59,9 +63,23 @@ export default function NavBar()
                     </h1>
 
                     <div className="basis-1/3 flex justify-end">
-                        <button>
-                            Sign In
-                        </button>
+                        {loggedIn ?
+                            (
+                                <h3>
+                                    {user}
+                                </h3>
+                            )
+                            :
+                            (
+                                <button onClick={() => {
+                                    console.log("Logging in as default user grumpy19");
+                                    setUser("grumpy19");
+                                }}>
+                                    Sign In
+                                </button>
+                            )
+                        }
+
                     </div>
                 </header>
             </div>
