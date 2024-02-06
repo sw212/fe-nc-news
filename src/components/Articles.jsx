@@ -1,5 +1,6 @@
+import { API } from "../api";
+
 import { useState, useEffect } from "react";
-import axios from "axios";
 
 import ArticleCard from "./ArticleCard";
 import Loading from "./Loading";
@@ -13,7 +14,7 @@ export default function Articles()
         const fetchArticles = async () => {
             try
             {
-                const response = await axios.get("https://nc-news-egcd.onrender.com/api/articles");
+                const response = await API.get("/articles");
                 setArticles(response.data.articles);
             }
             catch(err)

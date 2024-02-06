@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { API } from "../api";
 
 import CommentCard from "./CommentCard";
 import Button from "./Button";
@@ -18,7 +17,7 @@ export default function Comments(props)
         {
             try
             {
-                const response = await axios.get(`https://nc-news-egcd.onrender.com/api/articles/${article_id}/comments`);
+                const response = await API.get(`/articles/${article_id}/comments`);
                 setComments(response.data.comments);
             }
             catch(err)

@@ -1,3 +1,5 @@
+import { API } from "../api";
+
 import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import axios from "axios";
@@ -15,7 +17,7 @@ export default function Article()
 
     useEffect(() => {
         const fetchArticles = async () => {
-            const response = await axios.get(`https://nc-news-egcd.onrender.com/api/articles/${id}`);
+            const response = await API.get(`/articles/${id}`);
 
             setArticle(response.data.article);
         }
