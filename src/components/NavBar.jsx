@@ -49,7 +49,7 @@ export default function NavBar()
     );
 
     return (
-        <div className="p-4 mb-4 border-solid border-b-2">
+        <div className="p-4 mb-4">
             <div className="hidden sm:flex">
                 <header className="flex w-full max-w-7xl mx-auto justify-between items-center">
                     <nav className="basis-1/3">

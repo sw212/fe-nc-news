@@ -1,12 +1,16 @@
 import { API } from "../api";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import ArticleCard from "./ArticleCard";
 import Loading from "./Loading";
 
 export default function Articles()
 {
+    let [searchParams, setSearchParams] = useSearchParams();
+    const topic = searchParams.get("topic");
+
     const [articles, setArticles] = useState([]);
     const hasLoaded = !!articles.length;
 
@@ -14,7 +18,13 @@ export default function Articles()
         const fetchArticles = async () => {
             try
             {
-                const response = await API.get("/articles");
+                let URL = "/articles?";
+                if (topic)
+                {
+                    URL += `topic=${topic}`;
+                }
+
+                const response = await API.get(URL);
                 setArticles(response.data.articles);
             }
             catch(err)
@@ -25,7 +35,7 @@ export default function Articles()
         }
 
         fetchArticles();
-    }, []);
+    }, [topic]);
 
     return (
         <main>

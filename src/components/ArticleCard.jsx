@@ -14,8 +14,10 @@ export default function ArticleCard(props)
                     <h2>{title}</h2>
                 </Link>
 
-                <p className="flex flex-col sm:flex-row justify-between whitespace-nowrap"> 
-                    <span>{topic}</span>
+                <p className="flex flex-col sm:flex-row justify-between whitespace-nowrap">
+                    <Link to={`/articles?topic=${topic}`}>
+                        <span>{topic}</span>
+                    </Link>
                     <span>{comment_count} comments</span>
                 </p>
             </div>
