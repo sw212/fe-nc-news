@@ -34,7 +34,6 @@ export default function Comments(props)
             catch(err)
             {
                 console.log(err);
-                setComments([]);
             }
         }
 
@@ -118,7 +117,7 @@ export default function Comments(props)
                                 comments.map((comment) => {
                                     return (
                                         <li key={comment.comment_id}>
-                                            <CommentCard comment={comment} />
+                                            <CommentCard comment={comment} handleUndo={submitComment} />
                                         </li>
                                     );
                                 })
@@ -133,7 +132,7 @@ export default function Comments(props)
                                 comments.slice(0,2).map((comment) => {
                                     return (
                                         <li key={comment.comment_id}>
-                                            <CommentCard comment={comment} />
+                                            <CommentCard comment={comment} handleUndo={submitComment} />
                                         </li>
                                     );
                                 })
