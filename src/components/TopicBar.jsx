@@ -29,7 +29,7 @@ export default function TopicBar()
     const NavLink = ({to, text}) => {
         return (
             <Link to={to}>
-                <div className="py-4 ">
+                <div className="py-4">
                     <span>{text}</span>
                 </div>
             </Link>
@@ -37,9 +37,9 @@ export default function TopicBar()
     }
 
     return (
-        <div className="border-background_alt border-solid border-y-2 my-4">
-            <nav className="">
-                <ul className="flex justify-center space-x-6">
+        <div className="flex overflow-x-auto border-background_alt border-solid border-y-2 my-4 ">
+            <nav className="mx-auto">
+                <ul className="flex gap-x-6">
                     {topics.map((t) => {
                         const selected = t.slug === topic;
                         return (

@@ -85,7 +85,7 @@ export default function Article()
                                     {article.votes} votes
                                 </p>
                                 
-                                <div className="flex w-8 gap-2">
+                                <div className="flex gap-2">
                                     <div className="sm:absolute bottom-[60%]">
                                         <Button onClick={voteHandler(1)}>
                                             <svg viewBox="0 0 100 100" stroke="white" strokeWidth="4" className="w-3 h-3" xmlns="http://www.w3.org/2000/svg">
