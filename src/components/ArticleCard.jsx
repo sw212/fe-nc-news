@@ -8,7 +8,7 @@ export default function ArticleCard(props)
     return (
         <div className="flex flex-row px-2">
             <div className="flex justify-center basis-1/4 shrink-0">
-                <img className="object-cover aspect-square my-auto" src={article_img_url} />
+                <img className="object-cover aspect-square my-auto w-full" src={article_img_url} />
             </div>
 
             <div className="basis-3/4 shrink-0 flex flex-col justify-between max-2xl px-2 sm:px-4">
