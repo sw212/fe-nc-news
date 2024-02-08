@@ -91,7 +91,7 @@ export default function NavBar()
             </div>
 
             {showNavMenu &&
-                <div className="sm:hidden absolute top-0 left-0 bottom-0 right-0 bg-background" ref={navMenu}>
+                <div className="sm:hidden z-10 absolute top-0 left-0 bottom-0 right-0 bg-background" ref={navMenu}>
                     <nav className="flex text-center">
                         <ul className="flex flex-col space-y-2 p-4 gap-y-6">
                             {NavLinks}
