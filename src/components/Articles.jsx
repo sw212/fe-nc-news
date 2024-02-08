@@ -3,6 +3,7 @@ import { API } from "../api";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
+import ErrorMessage from "./ErrorMessage";
 import ArticleCard from "./ArticleCard";
 import Loading from "./Loading";
 
@@ -11,6 +12,8 @@ export default function Articles()
     const [searchParams, setSearchParams] = useSearchParams();
     const [articles, setArticles] = useState([]);
     const [hasLoaded, setHasLoaded] = useState(false);
+    const [error, setError] = useState(null);
+    const isError = !!error;
 
     const topic   = searchParams.get("topic");
     const order   = searchParams.get("order") ?? "desc";
@@ -33,10 +36,11 @@ export default function Articles()
 
                 const response = await API.get(URL);
                 setArticles(response.data.articles);
+                setError(null);
             }
             catch(err)
             {
-                setArticles([]);
+                setError(`${err.response.status}: ${err.response.data.msg}`);
             }
 
             setHasLoaded(true);
@@ -59,9 +63,19 @@ export default function Articles()
         });
     }
 
+    if (isError)
+    {
+        return <ErrorMessage message={error} />
+    }
+
+    if (!hasLoaded)
+    {
+        return <Loading />
+    }
+
     return (
         <main>
-            {!hasLoaded && <Loading />}
+            
 
             <div className="flex p-2 gap-x-8 overflow-x-auto">
                 <div>
