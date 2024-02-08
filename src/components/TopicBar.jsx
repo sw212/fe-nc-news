@@ -19,7 +19,6 @@ export default function TopicBar()
             }
             catch (err)
             {
-                console.log(err);
             }
         }
 

@@ -3,7 +3,7 @@ import { API } from "../api";
 import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 
-
+import ErrorMessage from "./ErrorMessage";
 import Comments from "./Comments";
 import Loading from "./Loading";
 import Button from "./Button";
@@ -12,15 +12,26 @@ export default function Article()
 {
     const { id } = useParams();
     const [article, setArticle] = useState({});
-    const hasLoaded = !!article.body;
+    const [hasLoaded, setHasLoaded] = useState(false);
+    const [error, setError] = useState(null);
+    const isError = !!error;
 
     const date = new Date(article.created_at);
 
     useEffect(() => {
         const fetchArticles = async () => {
-            const response = await API.get(`/articles/${id}`);
+            try
+            {
+                const response = await API.get(`/articles/${id}`);
+                setArticle(response.data.article);
+                setError(null);
+            }
+            catch(err)
+            {
+                setError(`${err.response.status}: ${err.response.data.msg}`);
+            }
 
-            setArticle(response.data.article);
+            setHasLoaded(true);
         }
 
         fetchArticles();
@@ -42,8 +53,6 @@ export default function Article()
         }
         catch(err)
         {
-            console.log(err);
-
             setArticle((article) => {
                 return {
                     ...article,
@@ -52,12 +61,20 @@ export default function Article()
             });
         }
     }
+    
+    if (isError)
+    {
+        return <ErrorMessage message={error} />
+    }
+
+    if (!hasLoaded)
+    {
+        return <Loading />
+    }
 
     return (
         <>
             <main>
-                {!hasLoaded && <Loading />}
-
                 <article className="p-4">
                     <header className="py-4">
                         <h2 className="text-3xl">{article.title}</h2>
