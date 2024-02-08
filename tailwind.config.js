@@ -9,6 +9,7 @@ export default {
             colors: {
                 "background": "#1c2025",
                 "background_alt": "#b3b6b8",
+                "background_header": "#1c2025",
             },
         },
     },

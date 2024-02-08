@@ -36,7 +36,7 @@ export default function TopicBar()
     }
 
     return (
-        <div className="flex overflow-x-auto border-background_alt border-solid border-y-2 my-4 ">
+        <div className="flex overflow-x-auto shadow-[0_2px] shadow-background_alt my-2">
             <nav className="mx-auto">
                 <ul className="flex gap-x-6">
                     {topics.map((t) => {

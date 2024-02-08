@@ -33,11 +33,19 @@ export default function NavBar()
 
     const NavLink = ({to, text}) => {
         return (
-            <li>
-                <Link to={to}>
-                    <span>{text}</span>
+            <li className="flex ">
+                <Link className="p-2 pointer-events-auto hover:shadow-[0_-3px_0_0_inset] shadow-background_alt" to={to}>
+                    {text}
                 </Link>
             </li>
+        )
+    }
+
+    const NavButton = ({text, onClick}) => {
+        return (
+            <button className="p-2 pointer-events-auto hover:shadow-[0_2px_0_0] shadow-background_alt" onClick={onClick}>
+                {text}
+            </button>
         )
     }
 
@@ -49,44 +57,34 @@ export default function NavBar()
     );
 
     return (
-        <div className="p-4 mb-4">
-            <div className="hidden sm:flex">
-                <header className="flex w-full max-w-7xl mx-auto justify-between items-center">
+        <div className="p-4 bg-[#373e46]" >
+            <div className="hidden sm:flex ">
+                <header className="flex items-center w-full max-w-7xl mx-auto justify-between">
                     <nav className="basis-1/3">
-                        <ul className="flex space-x-2">
+                        <ul className="flex gap-x-8 ">
                             {NavLinks}
                         </ul>
                     </nav>
 
-                    <h1 className="basis-1/3 text-3xl text-center">
-                        NC News
-                    </h1>
+                    <Link className="basis-1/3 text-3xl text-center pointer-events-auto" to="/">
+                        <h1 className="p-2">
+                            NC News
+                        </h1>
+                    </Link>
 
                     <div className="basis-1/3 flex justify-end">
                         {loggedIn ?
-                            (
-                                <h3>
-                                    {user}
-                                </h3>
-                            )
+                            <h3>{user}</h3>
                             :
-                            (
-                                <button onClick={() => {
-                                    console.log("Logging in as default user grumpy19");
-                                    setUser("grumpy19");
-                                }}>
-                                    Sign In
-                                </button>
-                            )
+                            <NavButton text="Sign In" onClick={() => setUser("grumpy19")} />
                         }
-
                     </div>
                 </header>
             </div>
 
             <div className="sm:hidden">
                 <header>
-                    <button className="cursor-pointer" onClick={handleMenuClick}>
+                    <button className="p-2 pointer-events-auto hover:shadow-[0_-3px_0_0_inset] shadow-background_alt" onClick={handleMenuClick}>
                         Menu
                     </button>
                 </header>
@@ -94,8 +92,8 @@ export default function NavBar()
 
             {showNavMenu &&
                 <div className="sm:hidden absolute top-0 left-0 bottom-0 right-0 bg-background" ref={navMenu}>
-                    <nav>
-                        <ul className="flex flex-col space-y-2 p-4">
+                    <nav className="flex text-center">
+                        <ul className="flex flex-col space-y-2 p-4 gap-y-6">
                             {NavLinks}
                         </ul>
                     </nav>
