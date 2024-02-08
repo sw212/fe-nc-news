@@ -42,7 +42,7 @@ export default function TopicBar()
                     {topics.map((t) => {
                         const selected = t.slug === topic;
                         return (
-                            <li key={t.slug} className={`${selected && "shadow-[0_-3px_0_0_inset_#a98342] text-[#a98342]"}`} >
+                            <li key={t.slug} className={selected ? "shadow-[0_-3px_0_0_inset_#a98342] text-[#a98342]" : "hover:shadow-[0_-3px_0_0_inset] hover:shadow-background_alt"} >
                                 {< NavLink to={`/articles?topic=${t.slug}`} text={t.slug} />}
                             </li>
                         );
