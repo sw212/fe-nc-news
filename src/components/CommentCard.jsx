@@ -6,7 +6,7 @@ export default function CommentCard(props)
     const date = new Date(created_at);
 
     return (
-        <div className="flex flex-col p-4 relative">
+        <div className="flex flex-col relative">
             <div className="border-solid border-l-2 px-2">
                 <div className="flex flex-col sm:flex-row justify-between whitespace-nowrap overflow-auto">
                     <div className="flex space-x-8">

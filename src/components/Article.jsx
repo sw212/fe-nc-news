@@ -1,4 +1,5 @@
 import { API } from "../api";
+import { ErrorMessageFromStatus } from "../utils";
 
 import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
@@ -11,7 +12,11 @@ import Button from "./Button";
 export default function Article()
 {
     const { id } = useParams();
+    
+
     const [article, setArticle] = useState({});
+    const [userVote, setUserVote] = useState(0);
+
     const [hasLoaded, setHasLoaded] = useState(false);
     const [error, setError] = useState(null);
     const isError = !!error;
@@ -19,7 +24,7 @@ export default function Article()
     const date = new Date(article.created_at);
 
     useEffect(() => {
-        const fetchArticles = async () => {
+        const fetchArticle = async () => {
             try
             {
                 const response = await API.get(`/articles/${id}`);
@@ -28,17 +33,29 @@ export default function Article()
             }
             catch(err)
             {
-                setError(`${err.response.status}: ${err.response.data.msg}`);
+                setError(ErrorMessageFromStatus(err.response.status));
             }
 
             setHasLoaded(true);
         }
 
-        fetchArticles();
+        fetchArticle();
     }, []);
 
     const voteHandler = (change) => async () => {
         const currentVotes = Number(article.votes);
+        const currentUserVote = userVote;
+
+        if (userVote == change)
+        {
+            change = -change;
+        }
+        else if (userVote)
+        {
+            change *= 2;
+        }
+        setUserVote(userVote + change);
+
 
         setArticle((article) => {
             return {
@@ -53,6 +70,8 @@ export default function Article()
         }
         catch(err)
         {
+            setUserVote(currentUserVote);
+
             setArticle((article) => {
                 return {
                     ...article,
@@ -104,22 +123,29 @@ export default function Article()
                                 
                                 <div className="flex gap-2">
                                     <div className="sm:absolute bottom-[60%]">
-                                        <Button onClick={voteHandler(1)}>
+                                        <button
+                                            className={`p-2 border-solid border-background_alt border-2 rounded-lg ${userVote===1 && "bg-background_alt"}`}
+                                            onClick={voteHandler(1)}
+                                        >
                                             <svg viewBox="0 0 100 100" stroke="white" strokeWidth="4" className="w-3 h-3" xmlns="http://www.w3.org/2000/svg">
                                                 <title>Upvote Arrow</title>
                                                 <line x1="10" y1="90" x2="50" y2="10" />
                                                 <line x1="50" y1="10" x2="90" y2="90" />
                                             </svg>
-                                        </Button>
+                                        </button>
                                     </div>
+
                                     <div className="sm:absolute top-[60%]">
-                                        <Button onClick={voteHandler(-1)}>
+                                        <button
+                                            className={`p-2 border-solid border-background_alt border-2 rounded-lg ${userVote===-1 && "bg-background_alt"}`}
+                                            onClick={voteHandler(-1)}
+                                        >
                                             <svg viewBox="0 0 100 100" stroke="white" strokeWidth="4" className="w-3 h-3" xmlns="http://www.w3.org/2000/svg">
                                                 <title>Downvote Arrow</title>
                                                 <line x1="10" y1="10" x2="50" y2="90" />
                                                 <line x1="50" y1="90" x2="90" y2="10" />
                                             </svg>
-                                        </Button>
+                                        </button>
                                     </div>
                                 </div>
                                 

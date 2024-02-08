@@ -1,4 +1,5 @@
 import { API } from "../api";
+import { ErrorMessageFromStatus } from "../utils";
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -40,7 +41,7 @@ export default function Articles()
             }
             catch(err)
             {
-                setError(`${err.response.status}: ${err.response.data.msg}`);
+                setError(ErrorMessageFromStatus(err.response.status));
             }
 
             setHasLoaded(true);
@@ -75,8 +76,6 @@ export default function Articles()
 
     return (
         <main>
-            
-
             <div className="flex p-2 gap-x-8 overflow-x-auto">
                 <div>
                     <label htmlFor="sort_key" className="mr-2">

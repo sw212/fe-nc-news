@@ -7,9 +7,9 @@ export default function ArticleCard(props)
 
     return (
         <div className="flex flex-row px-2">
-            <div className="flex justify-center basis-1/4 shrink-0">
+            <Link to={`/articles/${article_id}`} className="flex justify-center basis-1/4 shrink-0">
                 <img className="object-cover aspect-square my-auto w-full" src={article_img_url} />
-            </div>
+            </Link>
 
             <div className="basis-3/4 shrink-0 flex flex-col justify-between max-2xl px-2 sm:px-4">
                 <Link to={`/articles/${article_id}`}>
@@ -22,7 +22,10 @@ export default function ArticleCard(props)
                     <Link to={`/articles?topic=${topic}`}>
                         <span>{topic}</span>
                     </Link>
-                    <span>{comment_count} comments</span>
+
+                    <Link to={`/articles/${article_id}#comments`}>
+                        <span>{comment_count} comments</span>
+                    </Link>
                 </p>
             </div>
         </div>

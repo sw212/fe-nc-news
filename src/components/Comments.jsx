@@ -1,6 +1,8 @@
 import { API } from "../api";
+import { ErrorMessageFromStatus } from "../utils";
 
 import { useEffect, useState, useContext } from "react";
+import { useLocation } from 'react-router-dom';
 
 import { UserContext } from "../contexts/UserContext";
 
@@ -11,6 +13,8 @@ import Button from "./Button";
 export default function Comments(props)
 {
     const { article_id } = props;
+
+    const { hash } = useLocation();
 
     const { user } = useContext(UserContext);
     const loggedIn = user !== '';
@@ -47,12 +51,27 @@ export default function Comments(props)
             }
             catch(err)
             {
-                setError(`${err.response.status}: ${err.response.data.msg}`);
+                setError(ErrorMessageFromStatus(err.response.status));
             }
         }
 
         fetchComments();
     }, [user, refreshComments]);
+
+    useEffect(() => {
+        if (hash)
+        {
+            const scrollElement = document.getElementById(hash.slice(1));
+
+            if (scrollElement)
+            {
+                scrollElement.scrollIntoView({
+                    behavior: "smooth",
+                })
+            }
+
+        }
+    }, [hash, hasLoaded])
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -144,16 +163,23 @@ export default function Comments(props)
         return <Loading />
     }
 
+    
     const Comment = ({comment}) => {
+        const showUndo = (disableDelete.includes(comment.comment_id) && commentDeleted.includes(comment.comment_id));
+
         return (
-            <li className="relative py-2">
+            <li className="py-3 relative">
                 <CommentCard comment={comment} />
 
-                {(disableDelete.includes(comment.comment_id) && commentDeleted.includes(comment.comment_id)) &&
-                    <div className="absolute flex flex-col items-center justify-center inset-0 bg-black bg-opacity-25 rounded-lg">
+                {showUndo &&
+                    <div className="absolute flex gap-1 flex-col items-center justify-start inset-0 bg-black bg-opacity-25 rounded-lg">
                             <p>Comment deleted.</p>
 
-                            <button onClick={() => handleUndo(comment.body, comment.comment_id)} className="mt-4 p-2 bg-background_alt rounded-lg" disabled={disableUndo.includes(comment.comment_id)}>
+                            <button
+                                className="p-2 border-background_alt border-solid border-2 rounded-lg hover:bg-background_alt disabled:bg-background_alt disabled:cursor-not-allowed disabled:opacity-20"
+                                disabled={disableUndo.includes(comment.comment_id)}
+                                onClick={() => handleUndo(comment.body, comment.comment_id)}
+                            >
                                 Undo
                             </button>
                             
@@ -165,25 +191,29 @@ export default function Comments(props)
                     </div>
                 }
 
-                {(comment.author === user) &&
-                    <>
-                        <button onClick={() => handleDelete(comment.comment_id)} className="p-1 border-red-500 border-solid rounded-lg border-2" disabled={disableDelete.includes(comment.comment_id)}>
-                            Delete Comment
-                        </button>
-
+                {(comment.author === user && !showUndo) &&
+                    <div className="flex items-center">
                         {deleteError.includes(comment.comment_id) &&
                             <p className="text-red-500 font-semibold">
                                 Failed to delete comment.
                             </p>
                         }
-                    </>
+
+                        <button
+                            className="p-1 ml-auto pointer-events-auto border-red-500 border-solid rounded-lg border-2 hover:bg-red-500 disabled:bg-red-500 disabled:cursor-not-allowed disabled:opacity-20"
+                            onClick={() => handleDelete(comment.comment_id)}
+                            disabled={disableDelete.includes(comment.comment_id)}
+                        >
+                            Delete Comment
+                        </button>
+                    </div>
                 }
             </li>
         );
     }
 
     return (
-        <div className="border-solid border-t-2">
+        <div id="comments" className="border-solid border-t-2">
             <p className="text-3xl p-2">
                     {commentsCount} comments
             </p>
@@ -198,26 +228,43 @@ export default function Comments(props)
                     className="w-full p-2 border rounded bg-background"
                 />
 
-                <div className="flex p-4">
-                    {submitCommentError &&
-                        <p className="text-red-500 font-semibold">
-                            Failed to submit comment.
-                        </p>
-                    }
+                {(submitCommentError || loggedIn) &&
+                    <div className="flex items-center p-4">
+                        {submitCommentError &&
+                            <p className="text-red-500 font-semibold">
+                                Failed to submit comment.
+                            </p>
+                        }
 
-                    {loggedIn &&
-                        <button type="submit" className="p-2 ml-auto rounded bg-background_alt disabled:pointer-events-none" disabled={disableSubmit}>
-                            Add Comment
-                        </button>
-                    }
-                </div>
+                        {loggedIn &&
+                            <button
+                                className="p-2 ml-auto rounded bg-background_alt disabled:pointer-events-none disabled:opacity-20"
+                                type="submit"
+                                disabled={disableSubmit}
+                            >
+                                Add Comment
+                            </button>
+                        }
+                    </div>
+                }
             </form>
 
-            <ul>
+            <ul className="flex flex-col gap-y-4">
                 {
                     showAllComments ?
                     (
-                        comments.map((comment) => <Comment comment={comment} key={comment.comment_id} />)
+                        <>
+                            {
+                                comments.map((comment) => <Comment comment={comment} key={comment.comment_id} />)
+                            }
+                            {
+                                (commentsCount > 2) && (
+                                    <div className="">
+                                        <Button onClick={() => setShowAllComments(false)}>Show Fewer Comments</Button>
+                                    </div>
+                                )
+                            }
+                        </>
                     )
                     :
                     (
@@ -227,7 +274,9 @@ export default function Comments(props)
                             }
                             {
                                 (commentsCount > 2) && (
-                                    <Button onClick={() => setShowAllComments(true)}>Show More Comments</Button>
+                                    <div className="">
+                                        <Button onClick={() => setShowAllComments(true)}>Show More Comments</Button>
+                                    </div>
                                 )
                             }
                         </>
