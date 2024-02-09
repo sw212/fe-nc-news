@@ -7,12 +7,10 @@ import { useParams } from 'react-router-dom';
 import ErrorMessage from "./ErrorMessage";
 import Comments from "./Comments";
 import Loading from "./Loading";
-import Button from "./Button";
 
 export default function Article()
 {
     const { id } = useParams();
-    
 
     const [article, setArticle] = useState({});
     const [userVote, setUserVote] = useState(0);
@@ -116,13 +114,13 @@ export default function Article()
                                 </p>
                             </div>
 
-                            <div className="flex relative space-x-2">
+                            <div className="flex relative gap-x-2 sm:pt-8">
                                 <p>
                                     {article.votes} votes
                                 </p>
                                 
-                                <div className="flex gap-2">
-                                    <div className="sm:absolute bottom-[60%]">
+                                <div className="flex gap-2 pr-4">
+                                    <div className="sm:absolute bottom-[25%]">
                                         <button
                                             className={`p-2 border-solid border-background_alt border-2 rounded-lg ${userVote===1 && "bg-background_alt"}`}
                                             onClick={voteHandler(1)}
@@ -135,7 +133,7 @@ export default function Article()
                                         </button>
                                     </div>
 
-                                    <div className="sm:absolute top-[60%]">
+                                    <div className="sm:absolute bottom-[-45%]">
                                         <button
                                             className={`p-2 border-solid border-background_alt border-2 rounded-lg ${userVote===-1 && "bg-background_alt"}`}
                                             onClick={voteHandler(-1)}
@@ -148,12 +146,11 @@ export default function Article()
                                         </button>
                                     </div>
                                 </div>
-                                
                             </div>
                         </div>
                     </header>
                     
-                    <div className="">
+                    <div className="py-4">
                         <img className="object-contain" src={article.article_img_url} />
                     </div>
 
